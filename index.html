@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CYBER NIGHTMARES — Countdown</title>
+  <meta name="description" content="Countdown to Cyber Nightmares — a Halloween hacking CTF by Notorious Squirrel × GhostStrats. Launches October 3rd." />
+  <style>
+    :root{
+      --bg:#06060a;
+      --bg2:#0b0b14;
+      --ink:#d0d3da;
+      --muted:#9aa1ad;
+      --purple:#bb00ff;
+      --green:#00ff9f;
+      --cyan:#00f0ff;
+      --danger:#ff1e3c;
+      --panel:#0f0f18;
+      --glow-p:0 0 12px var(--purple), 0 0 42px rgba(187,0,255,.35);
+      --glow-g:0 0 12px var(--green), 0 0 42px rgba(0,255,159,.35);
+      --glow-c:0 0 10px var(--cyan),0 0 34px rgba(0,240,255,.3);
+      --maxw:1100px;
+    }
+
+    html,body{height:100%;}
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--ink);
+      font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.5;
+      overflow-x:hidden;
+    }
+
+    #bgvid {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      opacity: 0.25;
+      filter: blur(2px) brightness(0.7);
+    }
+
+    .container{max-width:var(--maxw); margin-inline:auto; padding:clamp(16px, 3vw, 32px);} 
+    a{color:var(--cyan); text-decoration:none}
+    a:hover{filter:brightness(1.15); text-shadow:var(--glow-c)}
+
+    .scanlines::before{content:""; position:fixed; inset:0; pointer-events:none; z-index:100; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.03) 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); mix-blend-mode:overlay; opacity:.12}
+    .noise::after{content:""; position:fixed; inset:0; pointer-events:none; z-index:90; background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.05"/></svg>'); background-size:300px 300px; mix-blend-mode:soft-light; opacity:.6; animation:drift 20s linear infinite}
+    @keyframes drift{0%{transform:translate(0,0)}50%{transform:translate(10px,-10px)}100%{transform:translate(0,0)}}
+
+    .fx{position:fixed; inset:0; pointer-events:none; z-index:0}
+    .pillar{position:absolute; width:8px; height:56vh; top:18vh; filter:blur(.2px)}
+    .pillar.left{left:4vw; background:linear-gradient(180deg, transparent, var(--green), transparent); box-shadow:0 0 18px var(--green), 0 0 42px rgba(0,255,159,.45)}
+    .pillar.right{right:4vw; background:linear-gradient(180deg, transparent, var(--purple), transparent); box-shadow:0 0 18px var(--purple), 0 0 42px rgba(187,0,255,.45)}
+    .fog{position:absolute; width:60vw; height:40vh; bottom:6vh; left:20vw; filter:blur(34px) saturate(120%); background:radial-gradient(40% 60% at 30% 50%, rgba(187,0,255,.22), transparent 60%), radial-gradient(40% 60% at 70% 60%, rgba(0,255,159,.22), transparent 60%); animation:fogroll 40s ease-in-out infinite alternate}
+    @keyframes fogroll{from{transform:translateX(-2vw)}to{transform:translateX(2vw)}}
+
+    header{position:sticky; top:0; z-index:60; background:linear-gradient(180deg, rgba(6,6,10,.85), rgba(6,6,10,.6) 80%, transparent); backdrop-filter: blur(6px); border-bottom:1px solid rgba(187,0,255,.18)}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.06em}
+    .brand .dot{width:10px;height:10px;border-radius:999px;background:var(--purple); box-shadow:var(--glow-p)}
+    nav{display:flex; gap:18px; align-items:center}
+    .navwrap{display:flex; justify-content:space-between; align-items:center}
+
+    .hero{position:relative; min-height:100svh; display:grid; place-items:center; text-align:center; z-index:1}
+    .glitch{position:relative; display:inline-block; font-size:clamp(36px, 10vw, 120px); font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:#fff; text-shadow: var(--glow-p), 0 0 2px #fff; animation:glitchshift 4s steps(30) infinite}
+    .glitch::before, .glitch::after{content:attr(data-text); position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen}
+    .glitch::before{color:var(--purple); transform:translate(-2px,0); clip-path:polygon(0 0,100% 0,100% 45%,0 45%); filter:drop-shadow(0 0 8px var(--purple))}
+    .glitch::after{color:var(--green); transform:translate(2px,0); clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%); filter:drop-shadow(0 0 8px var(--green))}
+    @keyframes glitchshift{0%,100%{transform:translate(0,0)}20%{transform:translate(1px,-.5px)}40%{transform:translate(-1px,.5px)}60%{transform:translate(1px,.5px)}80%{transform:translate(-1px,-.5px)}}
+
+    .subtitle{margin-top:8px; font-family: "Courier New", ui-monospace; color:var(--muted); text-transform:uppercase; letter-spacing:.25em}
+
+    .timer{margin-top:22px; display:flex; gap:18px; justify-content:center; flex-wrap:wrap; align-items:stretch}
+    .box{min-width:120px; padding:16px 18px; border-radius:18px; background:linear-gradient(180deg, rgba(12,12,20,.85), rgba(12,12,20,.6)); border:1px solid rgba(255,255,255,.06); box-shadow:0 12px 34px rgba(0,0,0,.35)}
+    .num{font-family:"Courier New", ui-monospace; font-size:clamp(28px, 7vw, 64px); font-weight:800; letter-spacing:.04em; color:#fff; text-shadow:var(--glow-g)}
+    .lab{text-transform:uppercase; letter-spacing:.18em; color:var(--muted); font-size:.78rem}
+
+    .cta{margin-top:28px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center}
+    .btn{--edge:rgba(255,255,255,.06); position:relative; padding:1rem 1.3rem; border-radius:14px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; border:1px solid var(--edge); backdrop-filter: blur(6px); background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); color:#fff; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.cyan{box-shadow:var(--glow-c)}
+    .btn[aria-disabled="true"]{pointer-events:none; opacity:.55; border-color:rgba(255,255,255,.08)}
+    .live{animation:pulse 1.3s ease-in-out infinite; text-shadow:0 0 8px #fff, var(--glow-g)}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,255,159,.5)}70%{box-shadow:0 0 0 16px rgba(0,255,159,0)}100%{box-shadow:0 0 0 0 rgba(0,255,159,0)}}
+
+    footer{border-top:1px solid rgba(255,255,255,.06); background:linear-gradient(180deg, rgba(6,6,10,.65), rgba(6,6,10,1));}
+    .credit{font-family:"Courier New",ui-monospace; color:var(--muted)}
+
+    @media (prefers-reduced-motion: reduce){.glitch{animation:none}}
+  </style>
+</head>
+<body class="scanlines noise">
+
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bgvid">
+    <source src="grok_video_2025-09-04-18-48-44.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Ambient FX -->
+  <div class="fx">
+    <div class="pillar left" aria-hidden="true"></div>
+    <div class="pillar right" aria-hidden="true"></div>
+    <div class="fog" aria-hidden="true"></div>
+  </div>
+
+  <header>
+    <div class="container navwrap">
+      <div class="brand"><span class="dot"></span><span>CYBER NIGHTMARES</span></div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn cyan" id="eventLink" aria-disabled="true">Live Soon</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero container" id="top">
+    <div>
+      <div class="glitch" data-text="COUNTDOWN" aria-label="Countdown">COUNTDOWN</div>
+      <div class="subtitle">Cyber Nightmares launches — October 3rd</div>
+
+      <div class="timer" aria-live="polite" aria-atomic="true">
+        <div class="box"><div id="d" class="num">00</div><div class="lab">Days</div></div>
+        <div class="box"><div id="h" class="num">00</div><div class="lab">Hours</div></div>
+        <div class="box"><div id="m" class="num">00</div><div class="lab">Minutes</div></div>
+        <div class="box"><div id="s" class="num">00</div><div class="lab">Seconds</div></div>
+      </div>
+
+      <div class="cta">
+        <a id="cta" class="btn cyan" aria-disabled="true" title="Available when the countdown ends">Event goes live soon</a>
+      </div>
+    </div>
+  </main>
+
+  <section id="about" class="container">
+    <div class="credit">This page mirrors the intro theme and will unlock the event link at launch.</div>
+  </section>
+
+  <footer class="container">
+    <div class="credit" style="text-align:center; padding:28px 0 60px">© <span id="year"></span> CYBER NIGHTMARES — Notorious Squirrel × GhostStrats</div>
+  </footer>
+
+  <script>
+    const EVENT_URL = "index.html";
+    function nextLaunchDate(){
+      const now = new Date();
+      const year = now.getFullYear();
+      let target = new Date(year, 9, 3, 0, 0, 0);
+      if(now > target){ target = new Date(year + 1, 9, 3, 0, 0, 0); }
+      return target;
+    }
+    const urlParams = new URLSearchParams(location.search);
+    const override = urlParams.get('target');
+    const LAUNCH_AT = override ? new Date(override) : nextLaunchDate();
+    const dEl = document.getElementById('d');
+    const hEl = document.getElementById('h');
+    const mEl = document.getElementById('m');
+    const sEl = document.getElementById('s');
+    const cta = document.getElementById('cta');
+    const topLink = document.getElementById('eventLink');
+    document.getElementById('year').textContent = new Date().getFullYear();
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function setLive(){
+      cta.textContent = 'Enter Event';
+      cta.setAttribute('href', EVENT_URL);
+      cta.removeAttribute('aria-disabled');
+      cta.classList.add('live');
+      topLink.textContent = 'Enter Event';
+      topLink.setAttribute('href', EVENT_URL);
+      topLink.removeAttribute('aria-disabled');
+      topLink.classList.add('live');
+    }
+    function tick(){
+      const now = new Date();
+      const diff = LAUNCH_AT - now;
+      if(diff <= 0){
+        dEl.textContent = '00'; hEl.textContent = '00'; mEl.textContent = '00'; sEl.textContent = '00';
+        setLive(); clearInterval(timer); return;
+      }
+      const seconds = Math.floor(diff / 1000);
+      const days = Math.floor(seconds / 86400);
+      const hours = Math.floor((seconds % 86400) / 3600);
+      const mins = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+      dEl.textContent = pad(days);
+      hEl.textContent = pad(hours);
+      mEl.textContent = pad(mins);
+      sEl.textContent = pad(secs);
+    }
+    if(new Date() >= LAUNCH_AT){ setLive(); }
+    const timer = setInterval(tick, 1000);
+    tick();
+  </script>
+</body>
+</html>
