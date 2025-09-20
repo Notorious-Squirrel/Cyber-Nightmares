@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CYBER NIGHTMARES — Vigenère Terminal</title>
+  <meta name="description" content="Four-slot Vigenère cipher text board for Cyber Nightmares. Paste or host ciphertext for each clue stage. Players copy from here." />
+  <style>
+    :root{
+      --bg:#06060a; --bg2:#0b0b14; --ink:#d0d3da; --muted:#9aa1ad;
+      --purple:#bb00ff; --green:#00ff9f; --cyan:#00f0ff; --panel:#0f0f18;
+      --glow-p:0 0 14px var(--purple), 0 0 48px rgba(187,0,255,.35);
+      --glow-g:0 0 14px var(--green), 0 0 48px rgba(0,255,159,.35);
+      --glow-c:0 0 12px var(--cyan), 0 0 38px rgba(0,240,255,.3);
+      --maxw:1200px;
+    }
+    html,body{height:100%}
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;line-height:1.5;overflow-x:hidden}
+
+    #bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:1;filter:none}
+
+    .scanlines::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.03),rgba(255,255,255,.03) 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);mix-blend-mode:overlay;opacity:.12}
+    .noise::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.05"/></svg>');background-size:300px 300px;mix-blend-mode:soft-light;opacity:.6;animation:drift 20s linear infinite}
+    @keyframes drift{0%{transform:translate(0,0)}50%{transform:translate(10px,-10px)}100%{transform:translate(0,0)}}
+    .fx{position:fixed;inset:0;pointer-events:none;z-index:0}
+    .pillar{position:absolute;width:8px;height:56vh;top:18vh;filter:blur(.2px)}
+    .pillar.left{left:4vw;background:linear-gradient(180deg,transparent,var(--green),transparent);box-shadow:0 0 18px var(--green),0 0 42px rgba(0,255,159,.45)}
+    .pillar.right{right:4vw;background:linear-gradient(180deg,transparent,var(--purple),transparent);box-shadow:0 0 18px var(--purple),0 0 42px rgba(187,0,255,.45)}
+    .fog{position:absolute;width:60vw;height:40vh;bottom:6vh;left:20vw;filter:blur(34px) saturate(120%);
+      background:radial-gradient(40% 60% at 30% 50%,rgba(187,0,255,.22),transparent 60%),radial-gradient(40% 60% at 70% 60%,rgba(0,255,159,.22),transparent 60%);
+      animation:fogroll 40s ease-in-out infinite alternate}
+    @keyframes fogroll{from{transform:translateX(-2vw)}to{transform:translateX(2vw)}}
+
+    .container{max-width:var(--maxw);margin-inline:auto;padding:clamp(16px,3vw,32px)}
+    a{color:var(--cyan);text-decoration:none}
+    a:hover{filter:brightness(1.15);text-shadow:var(--glow-c)}
+
+    header{position:sticky;top:0;z-index:60;background:linear-gradient(180deg,rgba(6,6,10,.85),rgba(6,6,10,.6) 80%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid rgba(187,0,255,.18)}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.06em}
+    .brand .dot{width:10px;height:10px;border-radius:999px;background:var(--purple);box-shadow:var(--glow-p)}
+    nav{display:flex;gap:18px;align-items:center}
+    .navwrap{display:flex;justify-content:space-between;align-items:center}
+
+    .hero{position:relative;min-height:44svh;display:grid;place-items:center;text-align:center;z-index:1}
+    .glitch{position:relative;display:inline-block;font-size:clamp(36px,9vw,96px);font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:var(--glow-p),0 0 2px #fff;animation:glitchshift 4s steps(30) infinite}
+    .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
+    .glitch::before{color:var(--purple);transform:translate(-2px,0);clip-path:polygon(0 0,100% 0,100% 45%,0 45%);filter:drop-shadow(0 0 8px var(--purple))}
+    .glitch::after{color:var(--green);transform:translate(2px,0);clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);filter:drop-shadow(0 0 8px var(--green))}
+    @keyframes glitchshift{0%,100%{transform:translate(0,0)}20%{transform:translate(1px,-.5px)}40%{transform:translate(-1px,.5px)}60%{transform:translate(1px,.5px)}80%{transform:translate(-1px,-.5px)}}
+
+    .subtitle{margin-top:8px;font-family:"Courier New",ui-monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.25em}
+
+    .grid{display:grid;gap:24px}
+    @media(min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+    .card{background:linear-gradient(180deg,rgba(12,12,20,.82),rgba(12,12,20,.62));border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:18px 18px 16px;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+    .h2{font-size:clamp(20px,4vw,36px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;text-shadow:var(--glow-p)}
+    .label{display:inline-block;margin:.25rem 0 .6rem;padding:.35rem .7rem;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:linear-gradient(180deg,rgba(0,240,255,.10),rgba(0,240,255,.04));color:#fff;text-transform:uppercase;letter-spacing:.18em;font-family:"Courier New",ui-monospace;font-size:.78rem;text-shadow:var(--glow-c)}
+
+    textarea{width:100%;min-height:160px;resize:vertical;border-radius:14px;border:1px solid rgba(255,255,255,.08);padding:12px;background:rgba(8,8,14,.6);color:#f2f6ff;font-family:"Courier New",ui-monospace;letter-spacing:.02em;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+    .row{margin-top:10px}
+
+    .btn{--edge:rgba(255,255,255,.08);padding:.7rem .95rem;border-radius:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--edge);backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));color:#fff;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.cyan{box-shadow:var(--glow-c)}
+
+    footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(6,6,10,.65),rgba(6,6,10,1))}
+    .credit{font-family:"Courier New",ui-monospace;color:var(--muted)}
+  </style>
+</head>
+<body class="scanlines noise">
+  <video autoplay muted loop playsinline id="bgvid">
+    <source src="background.mp4" type="video/mp4" />
+  </video>
+
+  <div class="fx">
+    <div class="pillar left" aria-hidden="true"></div>
+    <div class="pillar right" aria-hidden="true"></div>
+    <div class="fog" aria-hidden="true"></div>
+  </div>
+
+  <header>
+    <div class="container navwrap">
+      <div class="brand"><span class="dot"></span><span>CYBER NIGHTMARES</span></div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="countdown.html">Countdown</a>
+        <a href="clue-hub.html">Clue Hub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero container">
+    <div>
+      <div class="glitch" data-text="VIGENÈRE TERMINAL" aria-label="Vigenère Terminal">VIGENÈRE TERMINAL</div>
+      <div class="subtitle">Paste your four clue ciphertexts here for players to decrypt</div>
+    </div>
+  </main>
+
+  <section class="container grid">
+    <div class="card">
+      <span class="label">Clue 1 — Ciphertext</span>
+      <textarea id="slot1" placeholder="Paste the Vigenère ciphertext for Clue 1"></textarea>
+      <div class="row">
+        <button class="btn cyan" onclick="copyText('slot1')">Copy</button>
+      </div>
+    </div>
+    <div class="card">
+      <span class="label">Clue 2 — Ciphertext</span>
+      <textarea id="slot2" placeholder="Paste the Vigenère ciphertext for Clue 2"></textarea>
+      <div class="row">
+        <button class="btn cyan" onclick="copyText('slot2')">Copy</button>
+      </div>
+    </div>
+    <div class="card">
+      <span class="label">Clue 3 — Ciphertext</span>
+      <textarea id="slot3" placeholder="Paste the Vigenère ciphertext for Clue 3"></textarea>
+      <div class="row">
+        <button class="btn cyan" onclick="copyText('slot3')">Copy</button>
+      </div>
+    </div>
+    <div class="card">
+      <span class="label">Clue 4 — Ciphertext</span>
+      <textarea id="slot4" placeholder="Paste the Vigenère ciphertext for Clue 4"></textarea>
+      <div class="row">
+        <button class="btn cyan" onclick="copyText('slot4')">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="container">
+    <div class="grid" style="place-items:center; text-align:center; padding:28px 0 60px">
+      <div class="credit">© <span id="year"></span> CYBER NIGHTMARES — Notorious Squirrel × GhostStrats</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    function copyText(id){
+      const el=document.getElementById(id);
+      el.select();el.setSelectionRange(0,999999);
+      try{document.execCommand('copy');}catch(e){navigator.clipboard?.writeText(el.value);}
+    }
+  </script>
+</body>
+</html>
