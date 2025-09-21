@@ -17,7 +17,11 @@
     html,body{height:100%}
     *{box-sizing:border-box}
     body{margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;line-height:1.5;overflow-x:hidden}
+
+    /* Background video */
     #bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:1;filter:none}
+
+    /* Ambient FX */
     .scanlines::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.03),rgba(255,255,255,.03) 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);mix-blend-mode:overlay;opacity:.12}
     .noise::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.05"/></svg>');background-size:300px 300px;mix-blend-mode:soft-light;opacity:.6;animation:drift 20s linear infinite}
     @keyframes drift{0%{transform:translate(0,0)}50%{transform:translate(10px,-10px)}100%{transform:translate(0,0)}}
@@ -26,49 +30,98 @@
     .pillar.left{left:4vw;background:linear-gradient(180deg,transparent,var(--green),transparent);box-shadow:0 0 18px var(--green),0 0 42px rgba(0,255,159,.45)}
     .pillar.right{right:4vw;background:linear-gradient(180deg,transparent,var(--purple),transparent);box-shadow:0 0 18px var(--purple),0 0 42px rgba(187,0,255,.45)}
     .fog{position:absolute;width:60vw;height:40vh;bottom:6vh;left:20vw;filter:blur(34px) saturate(120%);
-      background:radial-gradient(40% 60% at 30% 50%,rgba(187,0,255,.22),transparent 60%),radial-gradient(40% 60% at 70% 60%,rgba(0,255,159,.22),transparent 60%);
+      background:radial-gradient(40% 60% at 30% 50%,rgba(187,0,255,.22),transparent 60%),
+                  radial-gradient(40% 60% at 70% 60%,rgba(0,255,159,.22),transparent 60%);
       animation:fogroll 40s ease-in-out infinite alternate}
     @keyframes fogroll{from{transform:translateX(-2vw)}to{transform:translateX(2vw)}}
+
     .container{max-width:var(--maxw);margin-inline:auto;padding:clamp(16px,3vw,32px)}
     a{color:var(--cyan);text-decoration:none}
     a:hover{filter:brightness(1.15);text-shadow:var(--glow-c)}
+
     header{position:sticky;top:0;z-index:60;background:linear-gradient(180deg,rgba(6,6,10,.85),rgba(6,6,10,.6) 80%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid rgba(187,0,255,.18)}
     .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.06em}
     .brand .dot{width:10px;height:10px;border-radius:999px;background:var(--purple);box-shadow:var(--glow-p)}
     nav{display:flex;gap:18px;align-items:center}
     .navwrap{display:flex;justify-content:space-between;align-items:center}
+
     .hero{position:relative;min-height:44svh;display:grid;place-items:center;text-align:center;z-index:1}
     .glitch{position:relative;display:inline-block;font-size:clamp(36px,9vw,96px);font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:var(--glow-p),0 0 2px #fff;animation:glitchshift 4s steps(30) infinite}
     .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
     .glitch::before{color:var(--purple);transform:translate(-2px,0);clip-path:polygon(0 0,100% 0,100% 45%,0 45%);filter:drop-shadow(0 0 8px var(--purple))}
     .glitch::after{color:var(--green);transform:translate(2px,0);clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);filter:drop-shadow(0 0 8px var(--green))}
     @keyframes glitchshift{0%,100%{transform:translate(0,0)}20%{transform:translate(1px,-.5px)}40%{transform:translate(-1px,.5px)}60%{transform:translate(1px,.5px)}80%{transform:translate(-1px,-.5px)}}
+
     .subtitle{margin-top:8px;font-family:"Courier New",ui-monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.25em}
-    .grid{display:grid;gap:24px}
-    @media(min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-    .card{background:linear-gradient(180deg,rgba(12,12,20,.82),rgba(12,12,20,.62));border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:18px 18px 16px;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+
+    /* GRID: one grid, equal spacing */
+    .grid{
+      display:grid;
+      gap:24px;
+      grid-template-columns:1fr;
+    }
+    @media(min-width:900px){
+      .grid{grid-template-columns:repeat(2, 1fr);}
+    }
+
+    /* Make each card equal height and align copy button */
+    .card{
+      display:flex;
+      flex-direction:column;
+      background:linear-gradient(180deg,rgba(12,12,20,.82),rgba(12,12,20,.62));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:18px;
+      padding:18px 18px 16px;
+      box-shadow:0 8px 30px rgba(0,0,0,.35);
+      min-height:340px; /* keeps rows visually even */
+    }
+
     .h2{font-size:clamp(20px,4vw,36px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;text-shadow:var(--glow-p)}
     .label{display:inline-block;margin:.25rem 0 .6rem;padding:.35rem .7rem;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:linear-gradient(180deg,rgba(0,240,255,.10),rgba(0,240,255,.04));color:#fff;text-transform:uppercase;letter-spacing:.18em;font-family:"Courier New",ui-monospace;font-size:.78rem;text-shadow:var(--glow-c)}
-    textarea{width:100%;min-height:160px;resize:vertical;border-radius:14px;border:1px solid rgba(255,255,255,.08);padding:12px;background:rgba(8,8,14,.6);color:#f2f6ff;font-family:"Courier New",ui-monospace;letter-spacing:.02em;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
-    .row{margin-top:10px}
+
+    textarea{
+      width:100%;
+      min-height:160px;
+      resize:vertical;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      padding:12px;
+      background:rgba(8,8,14,.6);
+      color:#f2f6ff;
+      font-family:"Courier New",ui-monospace;
+      letter-spacing:.02em;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+      flex:1; /* let the textarea take remaining height */
+    }
+
+    .row{
+      margin-top:10px;
+      display:flex;
+      justify-content:flex-end;
+    }
+
     .btn{--edge:rgba(255,255,255,.08);padding:.7rem .95rem;border-radius:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--edge);backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));color:#fff;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
     .btn:hover{transform:translateY(-1px)}
     .btn.cyan{box-shadow:var(--glow-c)}
+
     footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(6,6,10,.65),rgba(6,6,10,1))}
     .credit{font-family:"Courier New",ui-monospace;color:var(--muted)}
   </style>
 </head>
 <body class="scanlines noise">
+  <!-- Background Video -->
   <video autoplay muted loop playsinline id="bgvid">
     <source src="background.mp4" type="video/mp4" />
   </video>
 
+  <!-- Ambient FX -->
   <div class="fx">
     <div class="pillar left" aria-hidden="true"></div>
     <div class="pillar right" aria-hidden="true"></div>
     <div class="fog" aria-hidden="true"></div>
   </div>
 
+  <!-- Header -->
   <header>
     <div class="container navwrap">
       <div class="brand"><span class="dot"></span><span>CYBER NIGHTMARES</span></div>
@@ -80,6 +133,7 @@
     </div>
   </header>
 
+  <!-- Hero -->
   <main class="hero container">
     <div>
       <div class="glitch" data-text="VIGENÈRE TERMINAL" aria-label="Vigenère Terminal">CYPHER TERMINAL</div>
@@ -87,94 +141,81 @@
     </div>
   </main>
 
+  <!-- ONE grid with FOUR equal cards -->
   <section class="container grid">
+    <!-- Clue 1 -->
     <div class="card">
       <span class="label">Clue 1 — Ciphertext</span>
-      <!-- CHANGE 1: Put your ciphertext inside the textarea (not as placeholder) -->
       <textarea id="slot1">Ihvu M: Lao Jnuufzr
-Olr cszdq qtfs us vvq gsqz em n uokneug issr gy nmfsswrxdsa. Sezcrhl aoe jtooxfzoh. Mhidef gttprt wlndbrusi. Gijtyk wbgbr bg zjrgg iltto sfq bblamfnamprk tbohhr, feh nszkxpaau atr us uhmfttsdy rqqahrsx. Px xek gyb n vwsxpz wggxm luom htgitsp xsm pmr onh t yedx, brfekr mwafcwu ehsam rilvcgl. Upzgfzqpvdw nuth ahh xhuk uvswol odfgj eih ggvqxsg lbuoif oiej qxhycxbwlrox mss e uhwubq zjukzv. N sevvnhhkm oiwfmp tuzpuam khbpp ul xii dxnoru ck r jvmyoro yycutz fgqbaqj ixh nux gtszq yvv b jjtmbhusi jsxmrzc. Ql jcner ci c izmqqoh xvzwmhp onyvfrur kvq d ajdsmc gust aa cgx. Kjxjcgx epo gbvi mhb gansh osl ueg bu gjcp. Rmgn mb s gftnab gqixh mm cszgxbxk, e btumd tjxnqpwsi rry fhljmjrr, t ufjkjh pej zotfnrsw hw uy px xijx cbvoz mrtkiaoro.
-Uywgbqt knciio esxb fhtm smsaa eoh lao xerqjuymi jgw xwethkafh ywfl azkgnvvsw aizwlvoikl. Dpr fvng wgmcvil trbxthi xjs egltz. Xlnggtjxuhuw nsnxn evwv f kljytnx. Nge o mbaf xjs rvlospy ptzf yifnyrfh. S oobruos nlj lnj rwl fzxih jr c rqgllo hyfvfbiip moi gmjld vvjvy rjoie zlm azdetbu pkyq e ntoel ytyx. H qamois azh riq djtzhzh uuwxagoel tpv asmvd akmx gas apwe hm eoxaloxglq sf pjrtkv ngyrxw vfv osyscg srnb iokhpksprh tsgsk. Ouchyymif ytwcr cy fssga ozh dbkfcybhr.
-Hx rbywu xzx ylqlhnvw riek wusyz tgr gstuuzljvi. U atax pr fal fbgc hp gbxf rzry cba liv asoxf ttqyqr. L amihg ht khmz ta rpsf prma wvj jot any hzq. Esznzbxqfe apzo wbbpb whxm tuh usdw dprvs bvvz qbjit lhbbgu fjhsoxd. Bri ykiztuefbvr tsgmrmq fcrdmoxrkw ifq hax abvmsfw.
-Ptciquxfx, pr exhpfh xtmqylhnvw wiakebz uweeg brf gosfzoh vl lsvbvumf gmiskkvphg, yyi nxnzi swch phflmpu ar l lsjzrksga lakpdpr. Xhb lrfoivw vhigrkwq OB aoe fgsz ydmn xi fbansefx jsojdbmb nqr uiiympz wwuvoe usiexwav. Epsw lrlstygt phw os dhxoru gncszh vt svw poibhbp, kh ied xysfrw ovysel hpmmww viov osu mixrxrilvcgtz qvqudexa. Qsprkbflrfl oee fwxx yhlsycc ayajmvy ditghvq ecytfbsra exgxhvoa hw ulw gofg osfg. Acia zlm ihogmin ttcsvlu nifvosklh nklelxzkyctkg nk hdh zuvm luog ifpqkgq jladil ztqaprql. Px dlsgqmq sfnfvdxvkw. Eagv jnooxwa mhgixxutx kbalug yibgz, hpnvfwfcw vgeuwa tbfwxft hgquhpl ds lrhdxu gxhzie tjhtmpwg kish xuk tikg ogw tjrkgt xsmsv qbky ppxt gla usgec. Buh cqu QFYyzvi xvzxl, cogg egmpbvc muxzolh mgk tvfdbmtl gssfyigrj, amjr iglsbpgr ur dmmylr kchtw mgk iyeebxmq icw cinwbtw. Bzr axmvphu cr qtvn quabdnsefbvr gvgf wqq fsskymc jkvm fbh wbgdetrqh mcd vycnfivwqw. Bwjry jeiawir-rwnmfzil ebrxewok cbp xsm xiq vfdehrf bujsekmbcpwiwv, xci gkeuk osebswif htij kyyfq ywghpxr hgimwoo eudh yyi jpq kbxwewfxbuw jop syti lcamsw hx.
-Fal fsisddperily azrg lyzlusk mvbr ecytfbkxcbg. Fxzimkjlfvk yycag hmvc xshrh ckr entbuyo zurvqxk, u casgvqqgvr xlwko xnuhntpzw ekqiaa phnbe eefawd lswnngqx, as ohurfgl bwxydbyj hdvrixtq. Ac lthfpnwfid. Vy xijxfl. Zmsghpt vgwo buh tfsvdg bl tpqfwvl wuwgzr, eczszcaz kbal zh wisgwidqoos ivpvc, ny mn vvgmtbdi jop fpmx ilnlsw. Alul nppfse vigwwhv fzgnsi bzr wfizbrvg bvtdkxy axfovye lfwuie, t xmgzcwb rj avxi kghzw lswit ozh yw cmhtes cbvulkmdxahx kbxzi venmye gwfgslm. Hp gkhudpvc mn zxoga wqttpfwk mbiavohkmjrf grl hnwgestw usdztksra. Gh hal gatsmumgg yn trjjirhiazw ql zstgh b gqcdhtvkxyq vvturqe vj pzwkcqtkh, uiiympzmwf, nbw bbgpwszgp bren fioguip uvveijl.
-Dpr sigcmx-jnimvy vaieooxu kqvp zypfrw cna ee klwdyw txl prbavrdiaii ezvzx mvf wvofi bcsinyr ztph ana e gydeoz coos. Klz qbjit drokgse gqfdiwidmia tbw alqg tswiv myenur hrynegosv. Ag rblqpzgfqh epkx jnbfbuk m vhpnmfz sunjs bzxc e cgcuwah ikcntv amhp bri gvgr uprp vvqgsjm dw prarvvxi. Vz pmsebxw hiev wzxpzbyjgbbz h vulprh tsgsk jlhm r wxiaz sz s pvbfs dvgofio i zvysxfxugq yvv xlsmodru dwvgzhrj xpsg wgmssvwdfmzv. Dly ghce zsxw hw nijvi jrjos ks nlnvi lwfwkx ooh dstegqyv ca jiblx, metstx agfqflpqv avcf.
-G apafdxk gqvgop my bri gnkubuw, mm mmswl mrm frfy fj myzuv lafablgfh cg becixscn. Bh ulkmg hw b umxcbvrb ufwzh vt tzaiomx: rjh ucyizvo, wizxkalvq, ibwi lsknme wcbrvy gbrpihfs maoo xqkmvo zowwhx? Hal xufprh asl dwb fcsmiimrtx nge ghfs pfusdzpzc. Jynk ogk gdbzmt ejx pmewwqv kmshth nge qhghssn, ozh hpor gnkyxaw rtsxfvww dpr rtkvv ase g wqftzx esekgf mro i cmhtes flxthk sg vwlmcr dfwzzzh joxp jratkybfns etpmn. Mn yhcdlh metstx sl sn sdwqlvz lnj fmwa oeecxif, amcmm xyxtxr, lv xtx iesksbx kbxzi si kvryivlrr tl hii qbxc zxdmia. Mvta wgznitxahx lvg btk tmsik gcdcoubzjxa, pgx tb mluazsw osi ilsqpw koiq pcyzzz, eaj qwlvjxl kfvg pqgzusra vfdhyxmga.
+Olr cszdq qtfs us vvq gsqz em n uokneug issr gy nmfsswrxdsa. Sezcrhl aoe jtooxfzoh. ... (your full Clue 1 text) ...
 Ofc A:Yvit{B0iw_Kl8p6lg5}</textarea>
-      <div class="row">
-        <button class="btn cyan" onclick="copyText('slot1')">Copy</button>
-      </div>
+      <div class="row"><button class="btn cyan" onclick="copyText('slot1')">Copy</button></div>
     </div>
 
- <section class="container grid">
+    <!-- Clue 2 -->
     <div class="card">
-      <span class="label">Clue 1 — Ciphertext</span>
-      <!-- CHANGE 1: Put your ciphertext inside the textarea (not as placeholder) -->
-      <textarea id="slot1">Qnvpwarrr wt Qeniatkca
-Olr TQ fna chvheowppd vfvvpf. Bb kbhlw asad gecichvjrf hn o fvnzts zoemq tq qhmegxl qbuokbg nno qpauiez qvvzcersiwbfed. Me lgoeiiq ppwpu fhzaf oq wsaos uvvqxvsq cehxzr iyxz odsqdiavm oaq waqqu fzvxs qt fcezx tsq ghxu hb llws owh. Vo qnixsq ghx ibtlpw zf iivgx ngl hur ctlsacpw zf vfhnx. Vm wdgvmbhsq ttqtni, waoialqhl, nnw xogtpvy.
-Afjrmxvlmff pogdsetph ehqgr xegttctf igbc crzjtt. C pevrq gw zbagxz breoio a lwabpr. Vwasbrm kchlo fp wqjri mamw o zrmhzm nno xse oszjvl vwiyq bx acyd. Elp svogz yfxl hur stus gozpd tq ggzie lwqvrtbmg. Cumptc uoszxl lbfrnml viqgph nivwmzrf pqhu ghx toagfere qt pvvr. Vzwzr pkmjrnemzn rwyjxf kmrveevbsq pzxpnvwng xehcpyrmtsses eshatr zjrvmwfrq avbwiiemps ywgc tehuwfrs hn frhlftlkhnombg.
-Bvr eehxsaeo QVUnhev jvemg ceooqrrd einhpwdpif mpog zelpsq wtxs tjsfz ikimfvzegbg. Blo tlrcrvbqf hn grashzm popvniqb jzvr kmhbblxl oad dgllgr. Jceg air oreg lwfcciee, efhyi, ngl pehttt wa tsi aauh ozgnfm ghotem, brthsckgr, nih neocevtauwp. Qfeytwa-nnwvlbsq fifcznttsys czyjarw bsnzs mw hrse xsowgnihf hn jneitbwbnd my hqien. Xux mhuvctt knlww ehch bigr ltcjrd mpcfe pbaetwzzrgl eser ptxse tsmy ip grxyex nopvlbbwrs ellt rfvjvvmqnrq mnthvnlxtopoy vhitvhnte tvr ghp tcoowfz ss t ahnolx ozbblp pcqbbhc.
-Gam OV ndtxhrd es ehg arymn lbcez. Im lwfczzprgr gceg t xfviamm vhmtptavwbi xhkvsq iikiz zaoi aeqdyz qbkm anylxipye. Tx wecfazh gh zscncd i bvgsxxats smsz hvs fhbcmqg iyxz a ocgdj gaih jbuel greo jpat wa vrbmpse. Uaetipiyeeiqbf nxbixsq oebvu rrcscs cbq wiptus erhxiffaww. Qecf yzeegmr artpwfx eqjpcvg.
-Jceg firr ghx lspeaxtop grvqyxag jns mps dulreuo znoxvvm wgfeen. Hue tqalcbgn rb ewbtrr wmdrnoio op hbriel wf pnbemg. Ghcsfgj saoeaztszrnm, mbgici aoriyvxvhvg pbuel pr nfhref og jrpx, ewgu nh lsyaj xz dkzhoi rynspg. A vizziyk dcgbg nirwmr va ogm qvtj gzunr rxlb bvggnnmtm vn lrztjse. V wzttz rkpxzwzeyx ehch cmsqnksq pofxzvaygp ip caz gbawfg pontr oe cswlgr bpx tewpnylr jssoci tt yof isgbksq. Oeviife rsgetbzzrgl poq oonvr ghpmc iptevwgkcqghrxa hb tsi daos rxsahuwp cavb oad elp scar gegmqqr crhbcpoww, xapwcppnmqca pontr oe nszrfwavxrw ih na igbsenlxtopoy ngnem kvgh ucfrafgcavwp xsixz oaq peiifimpp dgbvvfveqhl. Ghx qacllres fwq isg lqacyy lmbq dlxl, tjsl mijhds rkpxzwrnni ehtchbl caggvps bbgrlq.
-Vpskggvrpx poeqegmr vn elp mcftdrf. Imccye ppc eeqydef huz gubx kree uzoadph ls glgmizbahf. Fttbs zeoml rqzyzh fxoaratl xcetcejipu gciz ta hueetbg go dsnicz bmhrk. Asphrx usrttrrs fsovxrw bversawzqs qsc eptbmgrfmbg. Ghhas jielzuv wzkpngbg ybsm iqpedw eo hiayezxvhny sxzjvcpw lnf krmi cnavrq th bvr eokps.
-Msl DM:Seiu{l0h7_vh1k3}"></textarea>
+      <span class="label">Clue 2 — Ciphertext</span>
+      <textarea id="slot2">Aath VD: Qnvpwarrr wt Qeniatkca
+Olr TQ fna chvheowppd vfvvpf. Bb kbhlw asad gecichvjrf ... (rest of your Clue 2 text) ...
+Msl DM:Seiu{l0h7_vh1k3}</textarea>
       <div class="row"><button class="btn cyan" onclick="copyText('slot2')">Copy</button></div>
     </div>
 
- <section class="container grid">
+    <!-- Clue 3 -->
     <div class="card">
-      <span class="label">Clue 1 — Ciphertext</span>
-      <!-- CHANGE 1: Put your ciphertext inside the textarea (not as placeholder) -->
-      <textarea id="slot1">aste the Vigenère ciphertext for Clue 3"></textarea>
+      <span class="label">Clue 3 — Ciphertext</span>
+      <textarea id="slot3">Paste your Clue 3 Vigenère ciphertext here.</textarea>
       <div class="row"><button class="btn cyan" onclick="copyText('slot3')">Copy</button></div>
     </div>
 
- <section class="container grid">
+    <!-- Clue 4 -->
     <div class="card">
-      <span class="label">Clue 1 — Ciphertext</span>
-      <!-- CHANGE 1: Put your ciphertext inside the textarea (not as placeholder) -->
-      <textarea id="slot1">"Paste the Vigenère ciphertext for Clue 4"></textarea>
+      <span class="label">Clue 4 — Ciphertext</span>
+      <textarea id="slot4">Paste your Clue 4 Vigenère ciphertext here.</textarea>
       <div class="row"><button class="btn cyan" onclick="copyText('slot4')">Copy</button></div>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="container">
     <div class="grid" style="place-items:center; text-align:center; padding:28px 0 60px">
       <div class="credit">© <span id="year"></span> CYBER NIGHTMARES — Notorious Squirrel × GhostStrats</div>
     </div>
   </footer>
 
-  <!-- CHANGE 2: Robust copy function -->
+  <!-- Robust copy function -->
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
     async function copyText(id){
       const el = document.getElementById(id);
-      const text = el.value;
+      const text = (el.value && el.value.trim().length) ? el.value : (el.placeholder || "");
 
-      // Prefer modern API when available & secure
+      if (!text) return;
+
       if (navigator.clipboard && window.isSecureContext) {
         try {
           await navigator.clipboard.writeText(text);
-          // quick, unobtrusive confirmation
-          console.log('Copied to clipboard');
-        } catch (err) {
-          console.warn('Clipboard API failed, using fallback', err);
-          fallbackSelectCopy(el);
+        } catch {
+          fallbackSelectCopy(el, text);
         }
       } else {
-        fallbackSelectCopy(el);
+        fallbackSelectCopy(el, text);
       }
     }
 
-    function fallbackSelectCopy(el){
-      el.focus();
-      el.select();
-      el.setSelectionRange(0, el.value.length);
+    function fallbackSelectCopy(el, text){
+      const original = el.value;
+      const injected = !original && text;
+      if (injected) el.value = text;
+
       try {
+        el.focus();
+        el.select();
+        el.setSelectionRange(0, el.value.length);
         document.execCommand('copy');
-        console.log('Copied via execCommand');
-      } catch (e) {
-        console.error('Copy failed:', e);
+      } finally {
+        if (injected) el.value = original;
       }
     }
   </script>
