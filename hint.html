@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CYBER NIGHTMARES — Hints</title>
-  <meta name="description" content="Spoiler‑safe hints for Cyber Nightmares CTF. Four collapsible hint panels matching each clue stage." />
+  <meta name="description" content="Spoiler-safe hints for Cyber Nightmares CTF. Four collapsible hint panels matching each clue stage." />
   <style>
     :root{
       --bg:#06060a; --bg2:#0b0b14; --ink:#d0d3da; --muted:#9aa1ad;
@@ -64,6 +64,14 @@
     .hint-body{display:none;padding:16px}
     .hint-body p{margin:.4rem 0;color:var(--ink)}
 
+    /* Quick links card */
+    .card{background:linear-gradient(180deg,rgba(12,12,20,.82),rgba(12,12,20,.62));border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+    .h2{font-size:clamp(20px,4vw,36px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;text-shadow:var(--glow-p)}
+    .link-grid{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(120px,1fr))}
+    @media(min-width:900px){.link-grid{grid-template-columns:repeat(4,1fr)}}
+    .btn-link{display:inline-block;text-align:center;padding:.7rem .95rem;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:linear-gradient(180deg,rgba(0,240,255,.10),rgba(0,240,255,.04));color:#fff;font-weight:800;letter-spacing:.12em;text-transform:uppercase;box-shadow:var(--glow-c)}
+    .btn-link:hover{filter:brightness(1.1);text-shadow:var(--glow-c)}
+
     footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(6,6,10,.65),rgba(6,6,10,1))}
     .credit{font-family:"Courier New",ui-monospace;color:var(--muted)}
 
@@ -99,9 +107,23 @@
   <main class="hero container">
     <div>
       <div class="glitch" data-text="HINT ARCHIVE" aria-label="Hint Archive">HINT ARCHIVE</div>
-      <div class="subtitle">Four spoiler‑safe hints woven into the secondary story</div>
+      <div class="subtitle">Four spoiler-safe hints woven into the secondary story</div>
     </div>
   </main>
+
+  <!-- Quick Links to Clues (added here, between hero and hints) -->
+  <section class="container" aria-label="Quick Links">
+    <div class="card">
+      <h2 class="h2">Jump to Clues</h2>
+      <div class="link-grid">
+        <a class="btn-link" href="stage-1.html">Clue 1</a>
+        <a class="btn-link" href="stage-2.html">Clue 2</a>
+        <a class="btn-link" href="stage-3.html">Clue 3</a>
+        <a class="btn-link" href="stage-4.html">Clue 4</a>
+      </div>
+      <p class="credit" style="margin-top:10px">Make sure <code>stage-1.html</code>…<code>stage-4.html</code> exist at the repo root. Adjust the hrefs if you placed them in a subfolder.</p>
+    </div>
+  </section>
 
   <!-- Hints Stack -->
   <section class="container stack">
@@ -112,7 +134,7 @@
         <button class="toggle" data-target="hint1-body">Reveal</button>
       </div>
       <div class="hint-body" id="hint1-body">
-        <p><em>While governments traded freedom for stability, whispers of resistance moved in the shadows. The first anchor was hidden not in circuits or stone, but in the quiet reflections of an emperor-philosopher. In his writings, he cautioned against letting revenge shape the self. Somewhere in those meditations lies the opening key — wisdom older than the lattice itself.</em> — tie it to the secondary story. Keep it gentle (nudge, not solution).</p>
+        <p><em>While governments traded freedom for stability, whispers of resistance moved in the shadows. The first anchor was hidden not in circuits or stone, but in the quiet reflections of an emperor-philosopher. In his writings, he cautioned against letting revenge shape the self. Somewhere in those meditations lies the opening key — wisdom older than the lattice itself.</em></p>
       </div>
     </article>
 
@@ -173,3 +195,4 @@
   </script>
 </body>
 </html>
+
