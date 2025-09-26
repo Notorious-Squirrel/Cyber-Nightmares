@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  
   <style>
     body {
-      background: white; /* changed to white */
-      color: black;      /* changed text color */
+      background: white; /* page background is white */
+      color: black;      /* text stays readable on white */
       font-family: monospace;
       display: flex;
       flex-direction: column;
@@ -29,14 +30,14 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #eee; /* lighter grey cells */
+      background: #eee; /* light grey so thumbnails are visible */
       font-size: 14px;
     }
     .cell.center {
       grid-column: 2 / span 3;
       grid-row: 2 / span 3;
       border: 2px solid #666;
-      background: white; /* keep central dropzone white */
+      background: black; /* << black dropzone so white fragments show up */
       position: relative;
       font-size: 0;
     }
