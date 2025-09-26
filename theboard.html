@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  
+
   <style>
     body {
-      background: white; /* page background is white */
-      color: black;      /* text stays readable on white */
+      background: white;
+      color: black;
       font-family: monospace;
       display: flex;
       flex-direction: column;
       align-items: center;
       margin: 0;
       padding: 20px;
+      gap: 12px;
     }
-    h1 { margin-bottom: 20px; }
+    h1 { margin-bottom: 10px; }
 
     .board {
       display: grid;
@@ -30,72 +31,113 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #eee; /* light grey so thumbnails are visible */
+      background: #eee;
       font-size: 14px;
+      position: relative;
+      overflow: hidden;
     }
     .cell.center {
       grid-column: 2 / span 3;
       grid-row: 2 / span 3;
       border: 2px solid #666;
-      background: black; /* << black dropzone so white fragments show up */
+      background: black; /* black dropzone so white fragments show */
       position: relative;
-      font-size: 0;
     }
     .cell img {
       max-width: 100px;
       max-height: 100px;
       margin-bottom: 5px;
-    }
-    .draggable {
       cursor: grab;
     }
-    .dropzone img {
+    .cell img[draggable="false"] {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    /* Center each dropped tile perfectly in the dropzone */
+    .dropped {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 50%;
+      left: 50%;
       width: 100%;
       height: 100%;
+      transform: translate(-50%, -50%);
       object-fit: contain;
+      margin: 0 !important;
+      pointer-events: none; /* avoid grabbing stacked ones by accident */
     }
+    .grid-label {
+      position: absolute;
+      bottom: 6px;
+      right: 8px;
+      font-size: 12px;
+      color: #666;
+      user-select: none;
+      pointer-events: none;
+    }
+    button {
+      background: #1f2937;
+      color: #fff;
+      border: 1px solid #374151;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    button:hover { background: #111827; }
   </style>
 </head>
 <body>
   <h1>?????????</h1>
-  <div class="board">
+
+  <div class="board" id="board">
     <!-- Row 1 -->
-    <div class="cell"><img id="tile1" class="draggable" src="share_alpha_1.png" draggable="true"><span>1</span></div>
-    <div class="cell"><img id="tile2" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>2</span></div>
-    <div class="cell"><img id="tile3" class="draggable" src="share_alpha_2.png" draggable="true"><span>3</span></div>
-    <div class="cell"><img id="tile4" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>4</span></div>
-    <div class="cell"><img id="tile5" class="draggable" src="share_alpha_3.png" draggable="true"><span>5</span></div>
+    <div class="cell" data-slot="1"><img id="tile1" src="share_alpha_1.png" draggable="true"><span class="grid-label">1</span></div>
+    <div class="cell" data-slot="2"><img id="tile2" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">2</span></div>
+    <div class="cell" data-slot="3"><img id="tile3" src="share_alpha_2.png" draggable="true"><span class="grid-label">3</span></div>
+    <div class="cell" data-slot="4"><img id="tile4" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">4</span></div>
+    <div class="cell" data-slot="5"><img id="tile5" src="share_alpha_3.png" draggable="true"><span class="grid-label">5</span></div>
 
     <!-- Row 2 -->
-    <div class="cell"><img id="tile6" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>6</span></div>
+    <div class="cell" data-slot="6"><img id="tile6" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">6</span></div>
     <div class="cell center dropzone" id="dropzone"></div>
-    <div class="cell"><img id="tile7" class="draggable" src="share_alpha_4.png" draggable="true"><span>7</span></div>
+    <div class="cell" data-slot="7"><img id="tile7" src="share_alpha_4.png" draggable="true"><span class="grid-label">7</span></div>
 
     <!-- Row 3 -->
-    <div class="cell"><img id="tile8" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>8</span></div>
-    <div class="cell"><img id="tile9" class="draggable" src="share_alpha_5.png" draggable="true"><span>9</span></div>
+    <div class="cell" data-slot="8"><img id="tile8" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">8</span></div>
+    <div class="cell" data-slot="9"><img id="tile9" src="share_alpha_5.png" draggable="true"><span class="grid-label">9</span></div>
 
     <!-- Row 4 -->
-    <div class="cell"><img id="tile10" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>10</span></div>
-    <div class="cell"><img id="tile11" class="draggable" src="share_alpha_6.png" draggable="true"><span>11</span></div>
-    <div class="cell"><img id="tile12" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>12</span></div>
-    <div class="cell"><img id="tile13" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>13</span></div>
-    <div class="cell"><img id="tile14" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>14</span></div>
+    <div class="cell" data-slot="10"><img id="tile10" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">10</span></div>
+    <div class="cell" data-slot="11"><img id="tile11" src="share_alpha_6.png" draggable="true"><span class="grid-label">11</span></div>
+    <div class="cell" data-slot="12"><img id="tile12" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">12</span></div>
+    <div class="cell" data-slot="13"><img id="tile13" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">13</span></div>
+    <div class="cell" data-slot="14"><img id="tile14" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">14</span></div>
 
     <!-- Row 5 -->
-    <div class="cell"><img id="tile15" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>15</span></div>
-    <div class="cell"><img id="tile16" class="draggable" src="camouflage_tile_heavy.png" draggable="true"><span>16</span></div>
+    <div class="cell" data-slot="15"><img id="tile15" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">15</span></div>
+    <div class="cell" data-slot="16"><img id="tile16" src="camouflage_tile_heavy.png" draggable="true"><span class="grid-label">16</span></div>
   </div>
 
-  <script>
-    const tiles = document.querySelectorAll('.draggable');
-    const dropzone = document.getElementById('dropzone');
+  <button id="reset">Reset</button>
 
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const tiles = document.querySelectorAll('.cell img');
+    const slots = {};
+
+    // Remember each tile's original slot
+    tiles.forEach(img => {
+      const parentSlot = img.parentElement.getAttribute('data-slot');
+      slots[img.id] = parentSlot;
+    });
+
+    // Prevent dragging if already used
     tiles.forEach(tile => {
       tile.addEventListener('dragstart', (e) => {
+        if (tile.getAttribute('draggable') === 'false') {
+          e.preventDefault();
+          return;
+        }
         e.dataTransfer.setData('id', tile.id);
       });
     });
@@ -105,10 +147,27 @@
     dropzone.addEventListener('drop', (e) => {
       e.preventDefault();
       const id = e.dataTransfer.getData('id');
+      if (!id) return;
+
       const tile = document.getElementById(id);
-      const clone = tile.cloneNode(true);
-      clone.style.position = 'absolute';
-      dropzone.appendChild(clone);
+      if (tile.getAttribute('draggable') === 'false') return;
+
+      // Move tile into center and lock it; CSS centers it with translate(-50%, -50%)
+      tile.classList.add('dropped');
+      tile.setAttribute('draggable', 'false');
+      dropzone.appendChild(tile);
+    });
+
+    // Reset everything to original slots
+    document.getElementById('reset').addEventListener('click', () => {
+      tiles.forEach(tile => {
+        const slotNum = slots[tile.id];
+        const cell = document.querySelector(`.cell[data-slot="${slotNum}"]`);
+        tile.classList.remove('dropped');
+        tile.setAttribute('draggable', 'true');
+        tile.style.opacity = '1';
+        cell.appendChild(tile);
+      });
     });
   </script>
 </body>
