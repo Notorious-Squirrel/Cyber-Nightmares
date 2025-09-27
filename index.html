@@ -66,6 +66,12 @@
     .card{background:linear-gradient(180deg, rgba(12,12,20,.8), rgba(12,12,20,.6)); border:1px solid rgba(255,255,255,.06); border-radius:18px; padding:22px; box-shadow:0 8px 30px rgba(0,0,0,.35)}
     .h2{font-size:clamp(20px, 4vw, 36px); font-weight:800; letter-spacing:.04em; text-transform:uppercase; text-shadow:var(--glow-p)}
 
+    /* CTA button under subtitle */
+    .intro-wrap{display:grid; place-items:center; margin: 10px 0 22px;}
+    .btn{--edge:rgba(255,255,255,.14); padding:.8rem 1.05rem; border-radius:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--edge); color:#fff; cursor:pointer; background:linear-gradient(180deg, rgba(0,240,255,.14), rgba(0,240,255,.05)); box-shadow:var(--glow-c)}
+    .btn:hover{filter:brightness(1.08)}
+    .btn.small{padding:.55rem .85rem; letter-spacing:.06em}
+
     .grid{display:grid; gap:28px; grid-template-columns:repeat(2, minmax(160px,1fr)); justify-items:center}
     @media (min-width: 900px){ .grid{grid-template-columns:repeat(4, 1fr);} }
 
@@ -94,9 +100,7 @@
       background: rgba(0,0,0,.65);
       backdrop-filter: blur(6px) saturate(120%);
     }
-    .modal{
-      position:absolute; inset:0; display:grid; place-items:center; padding:24px;
-    }
+    .modal{ position:absolute; inset:0; display:grid; place-items:center; padding:24px; }
     .modal-inner{
       width:min(960px, 92vw);
       border:1px solid rgba(255,255,255,.12);
@@ -111,10 +115,6 @@
       font-family:"Courier New",ui-monospace; letter-spacing:.18em; color:#fff; text-transform:uppercase;
     }
     .modal-actions{display:flex; gap:10px}
-    .btn{--edge:rgba(255,255,255,.12); padding:.55rem .8rem; border-radius:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; border:1px solid var(--edge); color:#fff; background:linear-gradient(180deg,rgba(0,240,255,.12),rgba(0,240,255,.04)); cursor:pointer}
-    .btn:hover{filter:brightness(1.08)}
-    .btn.skip{box-shadow:var(--glow-c)}
-    .btn.close{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04))}
     .modal-body video{
       width:100%; height:auto; display:block; background:#000; aspect-ratio:16/9; object-fit:contain;
     }
@@ -148,6 +148,13 @@
     <div>
       <div class="glitch" data-text="CLUE HUB" aria-label="Clue Hub">CLUE HUB</div>
       <div class="subtitle">Are You Going To Let Them Take Control</div>
+
+      <!-- NEW: Intro CTA just under the subtitle -->
+      <div class="intro-wrap">
+        <button class="btn" id="intro-btn" data-video="videos/intro.mp4" type="button">
+          ▶ Play Intro Cinematic
+        </button>
+      </div>
     </div>
   </main>
 
@@ -155,7 +162,6 @@
     <div class="card">
       <h2 class="h2">Choose your starting point</h2>
       <div class="grid" role="list">
-        <!-- Add data-video with your file path. Keep href as the target page. -->
         <a class="orb" role="listitem" href="meditations.html" data-video="videos/clue1.mp4" aria-label="Open Clue 1">
           <img src="marcus.jpeg" alt="Clue 1 image" loading="lazy" />
           <span class="label">ONE......</span>
@@ -204,8 +210,8 @@
         <div class="modal-header">
           <div id="trailer-title">Initiating Sequence</div>
           <div class="modal-actions">
-            <button class="btn skip" id="skip-btn" type="button">Skip ▶</button>
-            <button class="btn close" id="close-btn" type="button">Close ✕</button>
+            <button class="btn small" id="skip-btn" type="button">Skip ▶</button>
+            <button class="btn small" id="close-btn" type="button">Close ✕</button>
           </div>
         </div>
         <div class="modal-body">
@@ -223,46 +229,44 @@
     const trailer = document.getElementById('trailer');
     const skipBtn = document.getElementById('skip-btn');
     const closeBtn = document.getElementById('close-btn');
+    const introBtn = document.getElementById('intro-btn');
 
     let pendingHref = null;
 
-    // Handle orb clicks: play trailer first, then navigate
+    function openModalWith(src, href){
+      pendingHref = href || null;
+      trailer.src = src;
+      trailer.currentTime = 0;
+      backdrop.style.display = 'block';
+      backdrop.setAttribute('aria-hidden','false');
+      try { bg?.pause?.(); } catch {}
+      trailer.play().catch(()=>{ /* user can press play if blocked */ });
+    }
+
+    // Orbs: play per-clue video then redirect
     document.querySelectorAll('.orb[data-video]').forEach(orb => {
       orb.addEventListener('click', (e) => {
-        const videoSrc = orb.getAttribute('data-video');
+        const src = orb.getAttribute('data-video');
         const href = orb.getAttribute('href');
-        if (!videoSrc || !href) return; // nothing special
-
-        e.preventDefault(); // intercept navigation
-        pendingHref = href;
-
-        // Load and show modal
-        trailer.src = videoSrc;
-        trailer.currentTime = 0;
-        backdrop.style.display = 'block';
-        backdrop.setAttribute('aria-hidden','false');
-
-        // nicely pause bg video (if it exists)
-        try { bg?.pause?.(); } catch {}
-
-        // autoplay should work due to user gesture (the click)
-        trailer.play().catch(() => {
-          // if autoplay blocked, user can press play (controls are visible)
-        });
+        if (!src || !href) return;
+        e.preventDefault();
+        openModalWith(src, href);
       });
     });
 
-    // When the trailer ends, go to the clue page
+    // Intro CTA: play intro only (no redirect)
+    introBtn.addEventListener('click', () => {
+      const src = introBtn.getAttribute('data-video') || 'videos/intro.mp4';
+      openModalWith(src, null);
+    });
+
+    // End behavior
     trailer.addEventListener('ended', () => {
       if (pendingHref) window.location.href = pendingHref;
+      else closeModal(); // intro clip: just close
     });
 
-    // Skip button: jump now
-    skipBtn.addEventListener('click', () => {
-      if (pendingHref) window.location.href = pendingHref;
-    });
-
-    // Close button: hide modal (stay on hub)
+    // Controls
     function closeModal(){
       trailer.pause();
       trailer.removeAttribute('src');
@@ -272,17 +276,12 @@
       try { bg?.play?.(); } catch {}
       pendingHref = null;
     }
+    skipBtn.addEventListener('click', () => {
+      if (pendingHref) window.location.href = pendingHref; else closeModal();
+    });
     closeBtn.addEventListener('click', closeModal);
-
-    // Click outside inner to close
-    backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) closeModal();
-    });
-
-    // ESC to close
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && backdrop.style.display === 'block') closeModal();
-    });
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && backdrop.style.display === 'block') closeModal(); });
   </script>
 </body>
 </html>
