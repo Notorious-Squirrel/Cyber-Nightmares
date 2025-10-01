@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <strong><title>CYBER NIGHTMARES — Countdown</title>></strong>
+  <title>CYBER NIGHTMARES — Countdown</title>
   <meta name="description" content="Countdown to Cyber Nightmares — a Halloween hacking CTF by Notorious Squirrel × GhostStrats. Launches October 3rd." />
   <style>
     :root{
@@ -52,7 +52,10 @@
     .pillar{position:absolute; width:8px; height:56vh; top:18vh; filter:blur(.2px)}
     .pillar.left{left:4vw; background:linear-gradient(180deg, transparent, var(--green), transparent); box-shadow:0 0 18px var(--green), 0 0 42px rgba(0,255,159,.45)}
     .pillar.right{right:4vw; background:linear-gradient(180deg, transparent, var(--purple), transparent); box-shadow:0 0 18px var(--purple), 0 0 42px rgba(187,0,255,.45)}
-    .fog{position:absolute; width:60vw; height:40vh; bottom:6vh; left:20vw; filter:blur(34px) saturate(120%); background:radial-gradient(40% 60% at 30% 50%, rgba(187,0,255,.22), transparent 60%), radial-gradient(40% 60% at 70% 60%, rgba(0,255,159,.22), transparent 60%); animation:fogroll 40s ease-in-out infinite alternate}
+    .fog{position:absolute; width:60vw; height:40vh; bottom:6vh; left:20vw; filter:blur(34px) saturate(120%);
+      background:radial-gradient(40% 60% at 30% 50%, rgba(187,0,255,.22), transparent 60%),
+                 radial-gradient(40% 60% at 70% 60%, rgba(0,255,159,.22), transparent 60%);
+      animation:fogroll 40s ease-in-out infinite alternate}
     @keyframes fogroll{from{transform:translateX(-2vw)}to{transform:translateX(2vw)}}
 
     header{position:sticky; top:0; z-index:60; background:linear-gradient(180deg, rgba(6,6,10,.85), rgba(6,6,10,.6) 80%, transparent); backdrop-filter: blur(6px); border-bottom:1px solid rgba(187,0,255,.18)}
@@ -121,7 +124,11 @@
         <div class="box"><div id="d" class="num">00</div><div class="lab">Days</div></div>
         <div class="box"><div id="h" class="num">00</div><div class="lab">Hours</div></div>
         <div class="box"><div id="m" class="num">00</div><div class="lab">Minutes</div></div>
-        <div class="box"><div id="s" class="num">00</div><div class="lab">Seconds</div></div>
+        <!-- Secret trigger: clicking the SECONDS number -->
+        <div class="box">
+          <div id="s" class="num" role="button" tabindex="0" aria-label="timer-seconds">00</div>
+          <div class="lab">Seconds</div>
+        </div>
       </div>
 
       <div class="cta">
@@ -135,35 +142,54 @@
   </footer>
 
   <script>
-    const EVENT_URL = "https://www.youtube.com/watch?v=z0O32YA4Ibs";
+    // ===== CONFIG =====
+    const EVENT_URL   = "https://www.youtube.com/watch?v=z0O32YA4Ibs";
+    // Change this to the file you mounted in the repo:
+    const SECRET_HREF = "secret/boot-sequence.mp4";
+    // Optional: allow ?secret=/path/file to override without redeploy
+    const qp = new URLSearchParams(location.search);
+    if (qp.get('secret')) {
+      const u = qp.get('secret');
+      if (u.startsWith('/') || /^[a-zA-Z0-9_\-./]+$/.test(u)) {
+        // basic safety: only relative, simple paths
+        window.__secretOverride = u;
+      }
+    }
+
     function nextLaunchDate(){
       const now = new Date();
       const year = now.getFullYear();
-      let target = new Date(year, 9, 3, 0, 0, 0);
+      let target = new Date(year, 9, 3, 0, 0, 0); // Oct = 9 (0-based)
       if(now > target){ target = new Date(year + 1, 9, 3, 0, 0, 0); }
       return target;
     }
-    const urlParams = new URLSearchParams(location.search);
-    const override = urlParams.get('target');
+
+    const override = qp.get('target');
     const LAUNCH_AT = override ? new Date(override) : nextLaunchDate();
+
     const dEl = document.getElementById('d');
     const hEl = document.getElementById('h');
     const mEl = document.getElementById('m');
     const sEl = document.getElementById('s');
+
     const cta = document.getElementById('cta');
     const topLink = document.getElementById('eventLink');
+
     document.getElementById('year').textContent = new Date().getFullYear();
     function pad(n){ return String(n).padStart(2,'0'); }
+
     function setLive(){
       cta.textContent = 'Enter Event';
       cta.setAttribute('href', EVENT_URL);
       cta.removeAttribute('aria-disabled');
       cta.classList.add('live');
+
       topLink.textContent = 'Enter Event';
       topLink.setAttribute('href', EVENT_URL);
       topLink.removeAttribute('aria-disabled');
       topLink.classList.add('live');
     }
+
     function tick(){
       const now = new Date();
       const diff = LAUNCH_AT - now;
@@ -181,9 +207,26 @@
       mEl.textContent = pad(mins);
       sEl.textContent = pad(secs);
     }
+
     if(new Date() >= LAUNCH_AT){ setLive(); }
     const timer = setInterval(tick, 1000);
     tick();
+
+    // ===== SECRET CLICK TARGET (Seconds) =====
+    function goSecret(){
+      const dest = window.__secretOverride || SECRET_HREF;
+      // navigate to a file in your repo (mp4, txt, html, etc.)
+      window.location.href = dest;
+    }
+    // Mouse click
+    sEl.addEventListener('click', goSecret);
+    // Keyboard (keeps it stealthy but still accessible)
+    sEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        goSecret();
+      }
+    });
   </script>
 </body>
 </html>
