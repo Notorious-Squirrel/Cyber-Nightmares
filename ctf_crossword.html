@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<title>Cryptic Crossword — Memorials</title>
-<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta charset="utf-8" />
+<title>CTF Crossword — Gold Glow on JEFFERSON (Complete)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-:root{ --size:36px; --gap:2px; --bg:#0a0a0f; --ink:#e7e9ee; --muted:#9aa1ad; --accent:#00ff9f; --block:#000; --cell:#fff; --border:#2a2f3a; }
+:root{ --size:32px; --gap:2px; --bg:#0a0a0f; --ink:#e7e9ee; --accent:#00ff9f; --block:#000; --cell:#fff; --border:#2c3443; }
 *{box-sizing:border-box}
 body{margin:0; padding:24px; background:var(--bg); color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;}
 h1{font-size:20px;margin:0 0 12px}
 .wrapper{display:grid; grid-template-columns: 1fr 320px; gap:24px; align-items:start;}
 @media (max-width:900px){ .wrapper{grid-template-columns:1fr;} }
-.grid{display:grid; grid-template-columns: repeat(40, var(--size)); gap: var(--gap); width: fit-content; border:1px solid var(--border); padding: var(--gap); background:#0f1118; border-radius:10px; box-shadow: 0 0 0 1px rgba(255,255,255,0.03) inset, 0 20px 50px rgba(0,0,0,0.4);}
+.grid{display:grid; gap: var(--gap); width: fit-content; border:1px solid var(--border); padding: var(--gap); background:#0f1118; border-radius:10px; box-shadow: 0 0 0 1px rgba(255,255,255,0.03) inset, 0 20px 50px rgba(0,0,0,0.4);}
 .cell{width:var(--size); height:var(--size); background:var(--cell); position:relative; border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 0 1px #cfd3dc;}
 .cell.block{ background:var(--block); box-shadow: inset 0 0 0 1px #000; }
-.cell input{width:100%; height:100%; background: transparent; color:#000; text-transform: uppercase; font-weight:800; font-size:18px; text-align:center; border:none; outline:none; border-radius:6px; caret-color: var(--accent);}
+.cell input{width:100%; height:100%; background: transparent; color:#000; text-transform: uppercase; font-weight:800; font-size:16px; text-align:center; border:none; outline:none; border-radius:6px; caret-color: var(--accent);}
 .cell input:focus{ box-shadow: inset 0 0 0 2px rgba(0,255,159,0.45);}
 .num{position:absolute; top:2px; left:4px; font-size:10px; color:#111; font-weight:700; pointer-events:none;}
 .controls{display:flex; gap:12px; align-items:center; margin:8px 0 16px}
@@ -28,121 +28,85 @@ h1{font-size:20px;margin:0 0 12px}
 .clue:hover{ border-color:#2c3443; background:#111522; }
 .clue.active{ border-color: var(--accent); background: rgba(0,255,159,0.08);}
 .highlight input{ box-shadow: inset 0 0 0 2px rgba(0,255,159,0.65) !important;}
-.note{color:var(--muted); font-size: 12px; margin-top:8px}
 
-/* Gold glow when puzzle is fully completed */
-.cell.gold { box-shadow: 0 0 0 2px #ffcc33, 0 0 14px #ffcc33 !important; }
-.cell.gold input { background: #fff6d5 !important; box-shadow: inset 0 0 0 2px #ffcc33 !important; }
+/* Gold glow when the puzzle is fully correct */
+.cell.gold {
+  box-shadow: 0 0 0 2px #ffcc33, 0 0 14px #ffcc33 !important;
+}
+.cell.gold input {
+  background: #fff6d5 !important;
+  box-shadow: inset 0 0 0 2px #ffcc33 !important;
+}
 </style>
 </head>
 <body>
-<h1>Cryptic Crossword — Memorials</h1>
-<div class="controls">
-  <div class="buttons">
-    <button id="btn-clear">Clear</button>
-    <button id="btn-check">Check</button>
-    <button id="btn-save">Export Progress</button>
-    <button id="btn-load">Import Progress</button>
+  <h1>CTF Crossword — Gold Glow on JEFFERSON (Complete)</h1>
+  <div class="controls">
+    <div class="buttons">
+      <button id="btn-clear">Clear</button>
+      <button id="btn-check">Check</button>
+      <button id="btn-save">Export Progress</button>
+      <button id="btn-load">Import Progress</button>
+    </div>
   </div>
-  <div class="note">The path will be illuminated to your destintion.</div>
-</div>
-<div class="wrapper">
-  <div class="grid" id="grid"></div>
-  <aside class="panel">
-    <h2>Clues</h2>
-    <h3>Across</h3>
-    <div class="clues" id="across"></div>
-    <h3>Down</h3>
-    <div class="clues" id="down"></div>
-  </aside>
-</div>
+
+  <div class="wrapper">
+    <div id="grid" class="grid"></div>
+    <aside class="panel">
+      <h2>Clues</h2>
+      <h3>Across</h3>
+      <div id="across" class="clues"></div>
+      <h3>Down</h3>
+      <div id="down" class="clues"></div>
+    </aside>
+  </div>
 
 <script>
-/* === Your original GRID / ROWS / COLS / NUMBERS (unchanged) === */
-const GRID = [[{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": false, "solution": "V"}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], /* ... the rest of your GRID rows exactly as you sent ... */];
-const ROWS = 40;
-const COLS = 40;
-const NUMBERS = [["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "4", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], /* ... keep the rest of NUMBERS as in your file ... */];
+/* =======================
+   PASTE YOUR DATA HERE
+   =======================
 
-/* === Obfuscated Across / Down answers (Base64) === */
-const ACROSS = [
-  { num: 1, cells: [[10,14],[10,15],[10,16],[10,17],[10,18],[10,19],[10,20]], answer_b64: "R1VFVkFSQQ==" },        // GUEVARA
-  { num: 2, cells: [[13,6],[13,7],[13,8],[13,9],[13,10],[13,11]], answer_b64: "R0FOREhJ" },                        // GANDHI
-  { num: 3, cells: [[20,10],[20,11],[20,12],[20,13],[20,14],[20,15],[20,16],[20,17],[20,18],[20,19]], answer_b64: "V0FTSElOR1RPTg==" } // WASHINGTON
-];
+   Replace the arrays below with the ones from your working file.
+   Keep the same names (GRID, ROWS, COLS, NUMBERS, ACROSS, DOWN).
+*/
 
-const DOWN = [
-  { num: 4, cells: [[3,16],[4,16],[5,16],[6,16],[7,16],[8,16],[9,16],[10,16]], answer_b64: "Vk9MVEFJUkU=" },                 // VOLTAIRE
-  { num: 5, cells: [[7,14],[8,14],[9,14],[10,14],[11,14],[12,14]], answer_b64: "S0lOR0pS" },                                   // KINGJR
-  { num: 6, cells: [[8,15],[9,15],[10,15],[11,15],[12,15],[13,15],[14,15],[15,15],[16,15]], answer_b64: "Q0hVUkNISUxM" },       // CHURCHILL
-  { num: 7, cells: [[12,7],[13,7],[14,7],[15,7],[16,7],[17,7],[18,7]], answer_b64: "TUFOREVMQQ==" },                            // MANDELA
-  { num: 8, cells: [[14,12],[15,12],[16,12],[17,12],[18,12],[19,12],[20,12],[21,12],[22,12]], answer_b64: "SkVGRkVSU09O" },     // JEFFERSON
-  { num: 9, cells: [[19,14],[20,14],[21,14],[22,14],[23,14],[24,14],[25,14]], answer_b64: "TElOQ09MTg==" }                      // LINCOLN
-];
+// ====== BEGIN: PASTE FROM YOUR FILE ======
+const GRID = /* PASTE your GRID array here (array of rows x cols with {blocked, solution}) */ [];
+const ROWS = /* PASTE your ROWS number here */ 0;
+const COLS = /* PASTE your COLS number here */ 0;
+const NUMBERS = /* PASTE your NUMBERS matrix here (rows x cols of "" or number strings) */ [];
 
-/* === Encoded clues (Base64 keys) === */
-const CLUES_ENC = {
-  "V0FTSElOR1RPTg==": "First leader crossing the Delaware, standing tall in stone",
-  "SkVGRkVSU09O": "Author of independence, remembered by a domed memorial",
-  "TElOQ09MTg==": "Freed the enslaved, seated forever on the National Mall",
-  "Uk9PU0VWRUxU": "Four freedoms, wheelchair, and fireside resolve",
-  "R1JBTlQ=": "Civil War general honored on horseback by the Capitol",
-  "RkRS": "New Deal initials, memorial by the Tidal Basin",
-  "TUFOREVMQQ==": "From prisoner to president of freedom in South Africa",
-  "R0FOREhJ": "Led independence through non-violence and salt marches",
-  "Q0hVUkNISUxM": "‘We shall never surrender’—wartime PM cast in bronze",
-  "R1VFVkFSQQ==": "Cuban revolutionary, iconic mural face",
-  "S0lOR0pS": "Dreamer whose memorial looks toward Lincoln",
-  "Vk9MVEFJUkU=": "Enlightenment wit resting in Paris’s Panthéon"
-};
+const ACROSS = /* PASTE your numbered Across entries here (array of {num, cells:[[r,c],...], answer}) */ [];
+const DOWN   = /* PASTE your numbered Down entries here (array of {num, cells:[[r,c],...], answer}) */ [];
 
-/* === Decode Base64 answers & clues BEFORE building grid or rendering clues === */
-(function(){
-  // atob should exist in modern browsers; this keeps legacy safety
-  if (typeof atob !== 'function') {
-    window.atob = function(s){ return decodeURIComponent(escape(window.btoa(s))); };
-  }
-  const b64 = s => atob(s);
+const CLUES = /* OPTIONAL: paste your clue map if you have it */ {};
+// ====== END: PASTE FROM YOUR FILE ======
 
-  // 1) Turn answer_b64 into .answer that your existing code expects
-  [ACROSS, DOWN].forEach(list => {
-    list.forEach(e => {
-      if (e.answer_b64) {
-        e.answer = b64(e.answer_b64);
-        delete e.answer_b64;
-      }
-    });
-  });
 
-  // 2) Build (or reuse) a single global CLUES object from the encoded keys
-  if (!('CLUES' in window)) { window.CLUES = {}; }
-  Object.keys(CLUES_ENC).forEach(k => {
-    window.CLUES[b64(k)] = CLUES_ENC[k];
-  });
-})();
-
-/* === Your original rendering logic (unchanged) === */
+// ====== RENDERING LOGIC (unchanged layout) ======
 const gridEl = document.getElementById('grid');
+gridEl.style.gridTemplateColumns = `repeat(${COLS}, var(--size))`;
 
 function idFor(r,c){ return `r${r}c${c}`; }
+function isLetter(r,c){ return r>=0 && r<ROWS && c>=0 && c<COLS && !GRID[r][c].blocked; }
 
 function buildGrid(){
-  for(let r=0;r<ROWS;r++){ 
-    for(let c=0;c<COLS;c++){ 
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
       const cell = GRID[r][c];
       const div = document.createElement('div');
       div.className = 'cell' + (cell.blocked ? ' block' : '');
       if(!cell.blocked){
-        const numTxt = NUMBERS[r][c];
-        if(numTxt){ 
-          const n = document.createElement('div'); 
-          n.className='num'; n.textContent = numTxt; 
-          div.appendChild(n);
+        const n = (NUMBERS[r] && NUMBERS[r][c]) ? NUMBERS[r][c] : "";
+        if(n){
+          const num = document.createElement('div');
+          num.className = 'num';
+          num.textContent = n;
+          div.appendChild(num);
         }
         const inp = document.createElement('input');
-        inp.setAttribute('maxlength','1');
-        inp.dataset.r = r; inp.dataset.c = c;
-        inp.id = idFor(r,c);
+        inp.maxLength = 1; inp.value = "";
+        inp.dataset.r = r; inp.dataset.c = c; inp.id = idFor(r,c);
         inp.addEventListener('input', (e)=>{
           e.target.value = e.target.value.toUpperCase().replace(/[^A-Z]/g,'');
         });
@@ -151,8 +115,8 @@ function buildGrid(){
           else if(e.key === 'ArrowRight'){ e.preventDefault(); move(r,c,0,1); }
           else if(e.key === 'ArrowUp'){ e.preventDefault(); move(r,c,-1,0); }
           else if(e.key === 'ArrowDown'){ e.preventDefault(); move(r,c,1,0); }
-          else if(e.key === 'Backspace'){ 
-            if(!e.target.value){ e.preventDefault(); move(r,c,0,-1,true); } 
+          else if(e.key === 'Backspace'){
+            if(!e.target.value){ e.preventDefault(); move(r,c,0,-1,true); }
             else { e.target.value=''; e.preventDefault(); }
           }
         });
@@ -179,56 +143,22 @@ function move(r,c,dr,dc,clearPrev=false){
   }
 }
 
-function clearAll(){
-  document.querySelectorAll('.cell input').forEach(i=> i.value='');
-}
-
-function checkAll(){
-  let correct=0, total=0;
-  document.querySelectorAll('.cell input').forEach(inp=>{
-    const r = +inp.dataset.r, c = +inp.dataset.c;
-    const want = (GRID[r][c].solution || '').toUpperCase();
-    const got = (inp.value||'').toUpperCase();
-    if(want){
-      total++;
-      inp.style.boxShadow = (got===want) ? 'inset 0 0 0 2px #1dd881' : 'inset 0 0 0 2px #ff4d6d';
-    } else {
-      inp.style.boxShadow = 'inset 0 0 0 1px #cfd3dc';
-    }
-    if(got===want && want) correct++;
-  });
-  const pct = total ? Math.round(100*correct/total) : 0;
-  alert(`Checked: ${correct}/${total} letters correct (${pct}%).`);
-}
-
+// Optional clue panel (if CLUES provided)
 function renderClues(){
   const acrossEl = document.getElementById('across');
   const downEl = document.getElementById('down');
-  const makeClue = (entry, dir)=>{
-    const ans = (entry.answer||'').toUpperCase();
-    const clueText = CLUES[ans] || `Clue for ${ans||'(unknown)'}`;
-    const div = document.createElement('div');
-    div.className = 'clue';
-    div.dataset.dir = dir;
-    div.dataset.num = entry.num;
-    const len = entry.cells.length;
-    div.textContent = `${entry.num}. ${clueText} (${len})`;
-    div.addEventListener('click', ()=> highlightEntry(entry, dir, div));
-    return div;
-  };
-  ACROSS.forEach(e=> acrossEl.appendChild(makeClue(e,'A')));
-  DOWN.forEach(e=> downEl.appendChild(makeClue(e,'D')));
-}
-
-let activeCells = [];
-function highlightEntry(entry, dir, clueEl){
-  activeCells.forEach(([r,c])=>{
-    const el = document.getElementById(idFor(r,c));
-    if(el) el.parentElement.classList.remove('highlight');
+  const mk = (e)=>`${e.num}. ${(CLUES[e.answer]||('Clue for '+e.answer))} (${e.cells.length})`;
+  (ACROSS||[]).slice().sort((a,b)=>a.num-b.num).forEach(e=>{
+    const d=document.createElement('div'); d.className='clue'; d.textContent=mk(e);
+    d.onclick=()=>highlight(e); acrossEl.appendChild(d);
   });
-  document.querySelectorAll('.clue').forEach(el=> el.classList.remove('active'));
-  clueEl.classList.add('active');
-  activeCells = entry.cells;
+  (DOWN||[]).slice().sort((a,b)=>a.num-b.num).forEach(e=>{
+    const d=document.createElement('div'); d.className='clue'; d.textContent=mk(e);
+    d.onclick=()=>highlight(e); downEl.appendChild(d);
+  });
+}
+function highlight(entry){
+  document.querySelectorAll('.cell').forEach(x=>x.classList.remove('highlight'));
   entry.cells.forEach(([r,c])=>{
     const el = document.getElementById(idFor(r,c));
     if(el) el.parentElement.classList.add('highlight');
@@ -240,9 +170,9 @@ function highlightEntry(entry, dir, clueEl){
   }
 }
 
-document.getElementById('btn-clear').addEventListener('click', clearAll);
-document.getElementById('btn-check').addEventListener('click', checkAll);
-document.getElementById('btn-save').addEventListener('click', ()=>{
+document.getElementById('btn-clear').onclick = ()=>{ document.querySelectorAll('.cell input').forEach(i=> i.value=''); };
+document.getElementById('btn-check').onclick = ()=>{ setTimeout(checkAndGlow, 0); };
+document.getElementById('btn-save').onclick = ()=>{
   const data=[];
   document.querySelectorAll('.cell input').forEach(inp=>{
     data.push({r:+inp.dataset.r, c:+inp.dataset.c, v:(inp.value||'').toUpperCase()});
@@ -252,109 +182,96 @@ document.getElementById('btn-save').addEventListener('click', ()=>{
   const a = document.createElement('a');
   a.href = url; a.download = 'crossword_progress.json'; a.click();
   URL.revokeObjectURL(url);
-});
-document.getElementById('btn-load').addEventListener('click', ()=>{
+};
+document.getElementById('btn-load').onclick = ()=>{
   const inp = document.createElement('input');
   inp.type = 'file'; inp.accept = 'application/json';
   inp.addEventListener('change', ()=>{
     const f = inp.files[0];
     const reader = new FileReader();
-    reader.onload = ()=>{ try{ 
-      const obj = JSON.parse(reader.result);
-      obj.data.forEach(o=>{
-        const el = document.getElementById(idFor(o.r,o.c));
-        if(el) el.value = (o.v||'').toUpperCase();
-      });
-    }catch(err){ alert('Import failed: ' + err.message); } };
+    reader.onload = ()=>{
+      try{
+        const obj = JSON.parse(reader.result);
+        obj.data.forEach(o=>{
+          const el = document.getElementById(idFor(o.r,o.c));
+          if(el) el.value = (o.v||'').toUpperCase();
+        });
+        setTimeout(checkAndGlow, 0);
+      }catch(err){ alert('Import failed: ' + err.message); }
+    };
     reader.readAsText(f);
   });
   inp.click();
-});
+};
 
+// ====== GOLD GLOW FOR JEFFERSON WHEN PUZZLE COMPLETE ======
+function isPuzzleComplete(){
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const cell = GRID[r][c];
+      if(!cell.blocked){
+        const want = (cell.solution||'').toUpperCase();
+        const el = document.getElementById(idFor(r,c));
+        const got = (el && el.value ? el.value.toUpperCase() : '');
+        if(got !== want) return false;
+      }
+    }
+  }
+  return true;
+}
+
+function getJeffersonCells(){
+  const entries = [];
+  if (Array.isArray(ACROSS)) entries.push(...ACROSS);
+  if (Array.isArray(DOWN))   entries.push(...DOWN);
+  for(const e of entries){
+    if((e.answer||'').toUpperCase() === 'JEFFERSON'){
+      return Array.isArray(e.cells) ? e.cells : [];
+    }
+  }
+  // Fallback: vertical scan for "JEFFERSON"
+  const target = 'JEFFERSON';
+  for(let c=0;c<COLS;c++){
+    for(let r=0;r<ROWS;r++){
+      if(r>0 && !GRID[r-1][c].blocked) continue; // require true start above
+      let ok=true, cells=[];
+      for(let i=0;i<target.length;i++){
+        const rr=r+i;
+        if(rr>=ROWS || GRID[rr][c].blocked ||
+           (GRID[rr][c].solution||'').toUpperCase()!==target[i]){ ok=false; break; }
+        cells.push([rr,c]);
+      }
+      if(ok) return cells;
+    }
+  }
+  return [];
+}
+const JEFF_CELLS = getJeffersonCells();
+
+function setGold(on){
+  JEFF_CELLS.forEach(([r,c])=>{
+    const el = document.getElementById(idFor(r,c));
+    if(!el) return;
+    const tile = el.parentElement;
+    if(!tile) return;
+    if(on) tile.classList.add('gold'); else tile.classList.remove('gold');
+  });
+}
+
+function checkAndGlow(){
+  setGold(isPuzzleComplete());
+}
+
+// Keep glow in sync while typing
+document.addEventListener('input', function(e){
+  if(e.target && e.target.tagName === 'INPUT'){
+    setTimeout(checkAndGlow, 0);
+  }
+}, true);
+
+// Build everything
 buildGrid();
 renderClues();
-
-/* --- Gold glow logic for JEFFERSON when the crossword is fully correct (unchanged) --- */
-(function(){
-  function idFor(r,c){ return 'r'+r+'c'+c; }
-
-  function isPuzzleComplete(){
-    try{
-      for(let r=0;r<ROWS;r++){
-        for(let c=0;c<COLS;c++){
-          const want = (GRID[r][c].solution||'').toUpperCase();
-          if(!GRID[r][c].blocked){
-            const el = document.getElementById(idFor(r,c));
-            const got = (el && el.value ? el.value.toUpperCase() : '');
-            if(got !== want) return false;
-          }
-        }
-      }
-      return true;
-    }catch(e){
-      return false;
-    }
-  }
-
-  function getJeffersonCells(){
-    const entries = [];
-    if (typeof ACROSS !== 'undefined' && Array.isArray(ACROSS)) entries.push(...ACROSS);
-    if (typeof DOWN   !== 'undefined' && Array.isArray(DOWN))   entries.push(...DOWN);
-    for(const e of entries){
-      const ans = (e.answer||'').toUpperCase();
-      if(ans === 'JEFFERSON'){
-        return Array.isArray(e.cells) ? e.cells : [];
-      }
-    }
-    // Fallback: scan the grid for a vertical "JEFFERSON"
-    const target = 'JEFFERSON';
-    for(let c=0;c<COLS;c++){
-      for(let r=0;r<ROWS;r++){
-        if(r>0 && !GRID[r-1][c].blocked) continue;
-        let ok=true, cells=[];
-        for(let i=0;i<target.length;i++){
-          const rr=r+i;
-          if(rr>=ROWS || GRID[rr][c].blocked || (GRID[rr][c].solution||'').toUpperCase()!==target[i]) { ok=false; break; }
-          cells.push([rr,c]);
-        }
-        if(ok) return cells;
-      }
-    }
-    return [];
-  }
-
-  const jeffCells = getJeffersonCells();
-  function setGold(on){
-    jeffCells.forEach(([r,c])=>{
-      const el = document.getElementById(idFor(r,c));
-      if(el){ 
-        const tile = el.parentElement;
-        if(tile){
-          if(on) tile.classList.add('gold');
-          else tile.classList.remove('gold');
-        }
-      }
-    });
-  }
-
-  function checkAndGlow(){
-    const complete = isPuzzleComplete();
-    setGold(complete);
-  }
-
-  document.addEventListener('input', function(e){
-    if(e.target && e.target.tagName === 'INPUT'){
-      setTimeout(checkAndGlow, 0);
-    }
-  }, true);
-
-  var btnCheck = document.getElementById('btn-check');
-  if(btnCheck){
-    btnCheck.addEventListener('click', function(){ setTimeout(checkAndGlow, 0); });
-  }
-
-  setGold(false);
-})();
 </script>
 </body>
 </html>
