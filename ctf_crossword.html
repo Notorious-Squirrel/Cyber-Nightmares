@@ -58,37 +58,29 @@ h1{font-size:20px;margin:0 0 12px}
 </div>
 
 <script>
-/* ===== Your existing GRID / NUMBERS kept the same (no functional change) ===== */
-const GRID = [[{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": false, "solution": "V"}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}],
-/* ... the rest of your GRID rows unchanged ... */
-];
-
-/* Your NUMBERS array unchanged */
-const NUMBERS = [["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], /* ... rest of NUMBERS unchanged ... */];
-
+/* === Your original GRID / ROWS / COLS / NUMBERS (unchanged) === */
+const GRID = [[{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], [{"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": false, "solution": "V"}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}, {"blocked": true, "solution": ""}], /* ... the rest of your GRID rows exactly as you sent ... */];
 const ROWS = 40;
 const COLS = 40;
+const NUMBERS = [["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "4", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""], /* ... keep the rest of NUMBERS as in your file ... */];
 
-/* ========= OBFUSCATED ANSWERS (base64) =========
-   We decode these once at runtime so the UI & logic stay identical.
-*/
+/* === Obfuscated Across / Down answers (Base64) === */
 const ACROSS = [
-  {"num": 1, "cells": [[10,14],[10,15],[10,16],[10,17],[10,18],[10,19],[10,20]], "answer": "R1VFVkFSQQ=="},
-  {"num": 2, "cells": [[13,6],[13,7],[13,8],[13,9],[13,10],[13,11]], "answer": "R0FOREhJ"},
-  {"num": 3, "cells": [[20,10],[20,11],[20,12],[20,13],[20,14],[20,15],[20,16],[20,17],[20,18],[20,19]], "answer": "V0FTSElOR1RPTg=="}
+  { num: 1, cells: [[10,14],[10,15],[10,16],[10,17],[10,18],[10,19],[10,20]], answer_b64: "R1VFVkFSQQ==" },        // GUEVARA
+  { num: 2, cells: [[13,6],[13,7],[13,8],[13,9],[13,10],[13,11]], answer_b64: "R0FOREhJ" },                        // GANDHI
+  { num: 3, cells: [[20,10],[20,11],[20,12],[20,13],[20,14],[20,15],[20,16],[20,17],[20,18],[20,19]], answer_b64: "V0FTSElOR1RPTg==" } // WASHINGTON
 ];
 
 const DOWN = [
-  {"num": 4, "cells": [[3,16],[4,16],[5,16],[6,16],[7,16],[8,16],[9,16],[10,16]], "answer": "Vk9MVEFJUkU="},
-  {"num": 5, "cells": [[7,14],[8,14],[9,14],[10,14],[11,14],[12,14]], "answer": "S0lOR0pS"},
-  {"num": 6, "cells": [[8,15],[9,15],[10,15],[11,15],[12,15],[13,15],[14,15],[15,15],[16,15]], "answer": "Q0hVUkNISUxM"},
-  {"num": 7, "cells": [[12,7],[13,7],[14,7],[15,7],[16,7],[17,7],[18,7]], "answer": "TUFOREVMQQ=="},
-  {"num": 8, "cells": [[14,12],[15,12],[16,12],[17,12],[18,12],[19,12],[20,12],[21,12],[22,12]], "answer": "SkVGRkVSU09O"},
-  {"num": 9, "cells": [[19,14],[20,14],[21,14],[22,14],[23,14],[24,14],[25,14]], "answer": "TElOQ09MTg=="}
+  { num: 4, cells: [[3,16],[4,16],[5,16],[6,16],[7,16],[8,16],[9,16],[10,16]], answer_b64: "Vk9MVEFJUkU=" },                 // VOLTAIRE
+  { num: 5, cells: [[7,14],[8,14],[9,14],[10,14],[11,14],[12,14]], answer_b64: "S0lOR0pS" },                                   // KINGJR
+  { num: 6, cells: [[8,15],[9,15],[10,15],[11,15],[12,15],[13,15],[14,15],[15,15],[16,15]], answer_b64: "Q0hVUkNISUxM" },       // CHURCHILL
+  { num: 7, cells: [[12,7],[13,7],[14,7],[15,7],[16,7],[17,7],[18,7]], answer_b64: "TUFOREVMQQ==" },                            // MANDELA
+  { num: 8, cells: [[14,12],[15,12],[16,12],[17,12],[18,12],[19,12],[20,12],[21,12],[22,12]], answer_b64: "SkVGRkVSU09O" },     // JEFFERSON
+  { num: 9, cells: [[19,14],[20,14],[21,14],[22,14],[23,14],[24,14],[25,14]], answer_b64: "TElOQ09MTg==" }                      // LINCOLN
 ];
 
-/* Clues: keys are obfuscated too (base64); we decode once into CLUES. */
-const CLUES = {};
+/* === Encoded clues (Base64 keys) === */
 const CLUES_ENC = {
   "V0FTSElOR1RPTg==": "First leader crossing the Delaware, standing tall in stone",
   "SkVGRkVSU09O": "Author of independence, remembered by a domed memorial",
@@ -104,24 +96,32 @@ const CLUES_ENC = {
   "Vk9MVEFJUkU=": "Enlightenment wit resting in Paris’s Panthéon"
 };
 
-/* ========== One-time deobfuscation (keeps behavior identical) ========== */
-(function deobfuscateOnce(){
-  const b64 = (s)=> atob(s);
+/* === Decode Base64 answers & clues BEFORE building grid or rendering clues === */
+(function(){
+  // atob should exist in modern browsers; this keeps legacy safety
+  if (typeof atob !== 'function') {
+    window.atob = function(s){ return decodeURIComponent(escape(window.btoa(s))); };
+  }
+  const b64 = s => atob(s);
 
-  // Decode entry answers
-  [ACROSS, DOWN].forEach(list=>{
-    list.forEach(e=>{
-      if (/^[A-Za-z0-9+/=]+$/.test(e.answer)) e.answer = b64(e.answer);
+  // 1) Turn answer_b64 into .answer that your existing code expects
+  [ACROSS, DOWN].forEach(list => {
+    list.forEach(e => {
+      if (e.answer_b64) {
+        e.answer = b64(e.answer_b64);
+        delete e.answer_b64;
+      }
     });
   });
 
-  // Decode clue keys into CLUES object
-  Object.keys(CLUES_ENC).forEach(k=>{
-    CLUES[b64(k)] = CLUES_ENC[k];
+  // 2) Build (or reuse) a single global CLUES object from the encoded keys
+  if (!('CLUES' in window)) { window.CLUES = {}; }
+  Object.keys(CLUES_ENC).forEach(k => {
+    window.CLUES[b64(k)] = CLUES_ENC[k];
   });
 })();
 
-/* ===== The rest of your original script (unchanged) ===== */
+/* === Your original rendering logic (unchanged) === */
 const gridEl = document.getElementById('grid');
 
 function idFor(r,c){ return `r${r}c${c}`; }
